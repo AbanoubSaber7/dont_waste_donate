@@ -7,29 +7,90 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, iconTheme: const IconThemeData(color: Color(0xFF7E57C2))),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Welcome Back!", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF7E57C2))),
-            const SizedBox(height: 40),
-            TextField(decoration: InputDecoration(labelText: "Email", border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)))),
-            const SizedBox(height: 20),
-            TextField(obscureText: true, decoration: InputDecoration(labelText: "Password", border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)))),
-            const SizedBox(height: 30),
-            SizedBox(
+            // الجزء العلوي (Header مع Logo بسيط)
+            Container(
+              height: 300,
               width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () => context.go('/'), // يرجعه للرئيسية بعد الدخول
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF7E57C2), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                child: const Text("Login", style: TextStyle(color: Colors.white, fontSize: 18)),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF7E57C2), Color(0xFF5E35B1)],
+                ),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.volunteer_activism, size: 80, color: Colors.white),
+                  SizedBox(height: 10),
+                  Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  _buildTextField("Email Address", Icons.email_outlined),
+                  const SizedBox(height: 20),
+                  _buildTextField("Password", Icons.lock_outline, isPassword: true),
+
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(onPressed: () {}, child: const Text("Forgot Password?", style: TextStyle(color: Colors.grey))),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  // زر تسجيل الدخول
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: () => context.go('/home'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF7E57C2),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      ),
+                      child: const Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () => context.push('/register'),
+                        child: const Text("Register Now", style: TextStyle(color: Color(0xFF7E57C2), fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String hint, IconData icon, {bool isPassword = false}) {
+    return TextField(
+      obscureText: isPassword,
+      decoration: InputDecoration(
+        hintText: hint,
+        prefixIcon: Icon(icon, color: const Color(0xFF7E57C2)),
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
       ),
     );
   }
